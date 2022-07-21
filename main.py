@@ -18,39 +18,39 @@ windgeschwindigkeit = wetterdaten['wind']['speed']
 windrichtung = wetterdaten['wind']['deg']
 
 if 10 <= windrichtung < 30:
-    windrichtung="NNO"
+    _windrichtung="NNO"
 elif 30 <= windrichtung < 60:
-    windrichtung="NO"
+    _windrichtung="NO"
 elif 60 <= windrichtung < 80:
-    windrichtung="ONO"
+    _windrichtung="ONO"
 elif 80 <= windrichtung < 100:
-    windrichtung="O"
+    _windrichtung="O"
 elif 100 <= windrichtung < 120:
-    windrichtung="OSO"
+    _windrichtung="OSO"
 elif 120 <= windrichtung < 150:
-    windrichtung="SO"
+    _windrichtung="SO"
 elif 150 <= windrichtung < 170:
-    windrichtung="SSO"
+    _windrichtung="SSO"
 elif 170 <= windrichtung < 190:
-    windrichtung="S"
+    _windrichtung="S"
 elif 190 <= windrichtung < 210:
-    windrichtung="SSW"
+    _windrichtung="SSW"
 elif 210 <= windrichtung < 240:
-    windrichtung="SW"
+    _windrichtung="SW"
 elif 240 <= windrichtung < 260:
-    windrichtun="WSW"
+    _windrichtun="WSW"
 elif 260 <= windrichtung < 280:
-    windrichtung="W"
+    _windrichtung="W"
 elif 280 <= windrichtung < 300:
-    windrichtung="WNW"
+    _windrichtung="WNW"
 elif 300 <= windrichtung < 330:
-    windrichtung="NW"
+    _windrichtung="NW"
 elif 330 <= windrichtung < 350:
-    windrichtung="NNW"
+    _windrichtung="NNW"
 elif 350 <= windrichtung < 10:
-    windrichtung="N"
+    _windrichtung="N"
 
 print("Aktuelle Windgeschwindigkeit: ",windgeschwindigkeit,"m/s")
-print("Windrichtung: ",windrichtung)
+print("Windrichtung: ",windrichtung,"° ,",_windrichtung)
 
 
