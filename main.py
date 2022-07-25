@@ -1,21 +1,51 @@
 # coding: utf-8
 import requests
+import numpy as np
+import pandas as pd
 
 API_key = "7634767ba0fee7f3345a359625d2791c"
 
 standort = input("PLZ: ")
+
 land="de"
+
 API_anfrage_url = "http://api.openweathermap.org/data/2.5/weather?zip="+standort+","+land+"&appid="+API_key
-
-
 
 _anfrage = requests.get(API_anfrage_url)
 
-wetterdaten= _anfrage.json()
+wetterdaten = _anfrage.json()
 
 windgeschwindigkeit = wetterdaten['wind']['speed']
 
 windrichtung = wetterdaten['wind']['deg']
+
+#32683----
+
+API_anfrage_forecast = "http://api.openweathermap.org/data/2.5/forecast?zip="+standort+","+land+"&appid="+API_key
+
+_forecast = requests.get(API_anfrage_forecast)
+
+forecast = _forecast.json()
+
+
+
+lst_date = []
+lst_wind = []
+lst_time = []
+i = 0
+
+for i in range(0, len(forecast['list'])) :
+    _datetime = forecast['list'][i]['dt_txt']
+    time = _datetime.split()
+    lst_date.append(time[0])
+    lst_time.append(time[1])
+    lst_wind.append(forecast['list'][i]['wind']['speed'])
+
+df_winddaten = pd.DataFrame(list(zip(lst_date, lst_time, lst_wind)),
+               columns =['Datum', 'Uhrzeit','Windstaerke'])
+
+print(df_winddaten)
+
 
 if 10 <= windrichtung < 30:
     _windrichtung="NNO"
@@ -53,4 +83,4 @@ elif 350 <= windrichtung < 10:
 print("Aktuelle Windgeschwindigkeit: ",windgeschwindigkeit,"m/s")
 print("Windrichtung: ",windrichtung,"° ,",_windrichtung)
 
-
+print(API_anfrage_forecast)
