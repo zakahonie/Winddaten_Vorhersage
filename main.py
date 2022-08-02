@@ -4,19 +4,25 @@ import requests
 import pandas as pd
 import streamlit as st
 
+
+# Layout der Startseite
 st.set_page_config(
     page_title="Windvorhersage für Deutschland",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    layout="wide"
 )
+# columns für optik
 col1,col2,col3=st.columns([1,2,1])
 col2.title('Winddaten für Deutschland')
 form = col2.form(key='my_form', )
 city = form.text_input(label='Stadtname:')
-submit_button = form.form_submit_button(label='Enter')
+submit_button = form.form_submit_button(label='Los')
 
 
+# Notwendige Daten beschaffen und transformieren mithilfe der API von 'openweathermap.com'.
+# 2 Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
+#
 def APIRequest(city):
+
     try:
 
         API_key = "7634767ba0fee7f3345a359625d2791c"
@@ -51,15 +57,16 @@ def APIRequest(city):
         time_short = time[1].split(':')
         lst_time.append(time_short[0] + ":00")
         lst_wind.append(forecast['list'][i]['wind']['speed'])
-
+    #listen mit pandas zu dataframe zusammenfügen
     df_winddaten = pd.DataFrame(list(zip(lst_date, lst_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
-
+    #Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
     days_group = df_winddaten.groupby(["Datum"])
 
     return (days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city)
 
 
+# Wird in APIRequest funktion verwendet um Himmelsrichtung festzulegen
 def windrichtung_umrechner(windrichtung):
     if 10 <= windrichtung < 30:
         himmelsrichtung = "NNO"
@@ -96,8 +103,10 @@ def windrichtung_umrechner(windrichtung):
 
     return (himmelsrichtung)
 
-
+# Visualisierung der Daten. Die Spalten sind nur für den Aufbau da.
+#
 def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city):
+
     col_ol,col_l,col_r,col_or=st.columns([1,1,1,1])
 
     col2.header('Aktuelle Winddaten für ' + city)
@@ -107,7 +116,7 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
     col_r.metric("Aktuelle Windrichtung: ", str(windrichtung) + "° ", himmelsrichtung)
 
     st.header('Vorhersage')
-
+    #Für jeden Tag der vorhersage wird eine Tabelle und ein Verlaufsdiagramm gezeichnet
     for name, group in days_group:
         group.drop(columns=['Datum'], inplace=True)
         st.subheader('Datum: ' + name)
@@ -121,7 +130,7 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
 
         tab2.altair_chart(ts_chart_data)
 
-
+# Wenn der "submit button" gedrückt wird werden Daten angefordert, Transformiert, und anschließend Visualisiert.
 if submit_button:
     var_lst = APIRequest(city)
     cs_body(var_lst[0], var_lst[1], var_lst[2], var_lst[3], var_lst[4])
