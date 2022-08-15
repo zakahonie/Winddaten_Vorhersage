@@ -19,7 +19,7 @@ submit_button = form.form_submit_button(label='Los')
 
 
 # Notwendige Daten beschaffen und transformieren mithilfe der API von 'openweathermap.com'.
-# 2 Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
+# Zwei Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
 #
 def APIRequest(city):
 
@@ -61,6 +61,7 @@ def APIRequest(city):
     #listen mit pandas zu dataframe zusammenfügen
     df_winddaten = pd.DataFrame(list(zip(lst_date, lst_date_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
+
     #Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
     days_group = df_winddaten.groupby(["Datum"])
 
