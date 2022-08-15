@@ -56,7 +56,8 @@ def APIRequest(city):
         lst_date.append(date_time[0])
         date_time_short = date_time[1].split(':')
         lst_date_time.append(date_time_short[0] + ":00")
-        lst_wind.append(forecast['list'][i]['wind']['speed'].round(2))
+        wind = forecast['list'][i]['wind']['speed']
+        lst_wind.append(forecast['list'][i]['wind']['speed'])
     #listen mit pandas zu dataframe zusammenfügen
     df_winddaten = pd.DataFrame(list(zip(lst_date, lst_date_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
