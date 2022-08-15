@@ -119,7 +119,8 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
     #Für jeden Tag der vorhersage wird eine Tabelle und ein Verlaufsdiagramm gezeichnet
     for name, group in days_group:
         group.drop(columns=['Datum'], inplace=True)
-        st.subheader('Datum: ' + name)
+        split_name = name.split('-')
+        st.subheader('Datum: ' + split_name[2] + '.' + split_name[1] + '.' + split_name[0])
         tab1, tab2 = st.tabs(["🗃 Data", "📈 Chart"])
         tab1.write(group)
 
