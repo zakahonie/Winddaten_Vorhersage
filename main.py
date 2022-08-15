@@ -57,7 +57,7 @@ def APIRequest(city):
         date_time_short = date_time[1].split(':')
         lst_date_time.append(date_time_short[0] + ":00")
         wind = forecast['list'][i]['wind']['speed']
-        lst_wind.append(forecast['list'][i]['wind']['speed'])
+        lst_wind.append(str(forecast['list'][i]['wind']['speed']))
     #listen mit pandas zu dataframe zusammenfügen
     df_winddaten = pd.DataFrame(list(zip(lst_date, lst_date_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
@@ -124,10 +124,11 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
         split_name = name.split('-')
         st.subheader('Datum: ' + split_name[2] + '.' + split_name[1] + '.' + split_name[0])
         tab1, tab2 = st.tabs(["🗃 Data", "📈 Chart"])
+
         tab1.write(group)
 
 
-        ts_chart_data = altair.Chart(group).mark_line().encode(
+        ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line().encode(
             x=altair.X('Uhrzeit'),
             y=altair.Y('Windstärke in m/s')).properties(width=300, height=250)
 
