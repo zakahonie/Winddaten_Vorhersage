@@ -122,19 +122,20 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
     for name, group in days_group:
         group.drop(columns=['Datum'], inplace=True)
         split_name = name.split('-')
-        st.subheader('Datum: ' + split_name[2] + '.' + split_name[1] + '.' + split_name[0])
-        tab1, tab2 = st.tabs(["🗃 Data", "📈 Chart"])
 
-        tab1.write(group)
+        with st.expander(split_name[2] + '.' + split_name[1] + '.' + split_name[0]):
+            tab1, tab2 = st.tabs([ "📈 Chart", "🗃 Data"])
 
-        ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line(
-            point=altair.OverlayMarkDef(color="orange")
-        ).encode(
-            x=altair.X('Uhrzeit'),
-            y=altair.Y('Windstärke in m/s'),
-            tooltip='Windstärke in m/s').properties(width=400, height=350)
+            ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line(
+                point=altair.OverlayMarkDef(color="orange")
+            ).encode(
+                x=altair.X('Uhrzeit'),
+                y=altair.Y('Windstärke in m/s'),
+                tooltip='Windstärke in m/s').properties(width=400, height=350)
 
-        tab2.altair_chart(ts_chart_data)
+            tab1.altair_chart(ts_chart_data)
+
+            tab2.write(group)
 
 # Wenn der "submit button" gedrückt wird werden Daten angefordert, Transformiert, und anschließend Visualisiert.
 if submit_button:
