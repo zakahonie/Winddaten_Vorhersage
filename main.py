@@ -135,7 +135,9 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
 
             tab1.altair_chart(ts_chart_data)
 
-            tab2.table(group.style.hide_index())
+            styler = group.style.hide_index()
+            with tab2:
+                st.write(styler.to_html(), unsafe_allow_html=True)
 
 # Wenn der "submit button" gedrückt wird werden Daten angefordert, Transformiert, und anschließend Visualisiert.
 if submit_button:
