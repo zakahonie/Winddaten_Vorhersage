@@ -4,7 +4,6 @@ import requests
 import pandas as pd
 import streamlit as st
 
-
 # Layout der Startseite
 st.set_page_config(
     page_title="Windvorhersage für Deutschland",
@@ -22,7 +21,6 @@ submit_button = form.form_submit_button(label='Los')
 # 2 Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
 #
 def APIRequest(city):
-
     try:
 
         API_key = "7634767ba0fee7f3345a359625d2791c"
@@ -109,7 +107,6 @@ def windrichtung_umrechner(windrichtung):
 # Visualisierung der Daten. Die Spalten sind nur für den Aufbau da.
 #
 def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city):
-
     col_ol, col_l, col_r, col_or = st.columns([1, 1, 1, 1])
 
     col2.header('Aktuelle Winddaten für ' + city)
@@ -125,7 +122,10 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
         split_name = name.split('-')
 
         with st.expander(split_name[2] + '.' + split_name[1] + '.' + split_name[0]):
-            tab1, tab2 = st.tabs(["📈 Chart", "🗃 Data"])
+            tab1, tab2 = st.tabs(["🗃 Data", "📈 Chart"])
+
+            styler = group.style.hide_index()
+            tab1.write(styler.to_html(), unsafe_allow_html=True)
 
             ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line(
                 point=altair.OverlayMarkDef(color="orange")).encode(
@@ -133,10 +133,7 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
                 y=altair.Y('Windstärke in m/s'),
                 tooltip='Windstärke in m/s').properties(width=280, height=0)
 
-            tab1.altair_chart(ts_chart_data)
-
-            styler = group.style.hide_index()
-            tab2.write(styler.to_html(), unsafe_allow_html=True)
+            tab2.altair_chart(ts_chart_data)
 
 
 # Wenn der "submit button" gedrückt wird werden Daten angefordert, Transformiert, und anschließend Visualisiert.
