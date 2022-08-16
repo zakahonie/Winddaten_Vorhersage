@@ -131,7 +131,7 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
                 point=altair.OverlayMarkDef(color="orange")).encode(
                 x=altair.X('Uhrzeit'),
                 y=altair.Y('Windstärke in m/s'),
-                tooltip='Windstärke in m/s').properties(width=400, height=350)
+                tooltip='Windstärke in m/s').properties(width=0, height=0)
 
             tab1.altair_chart(ts_chart_data)
 
