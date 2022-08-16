@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 # columns für optik
-col1,col2,col3=st.columns([1,2,1])
+col1, col2, col3 = st.columns([1, 2, 1])
 col2.title('Winddaten für Deutschland')
 form = col2.form(key='my_form', )
 city = form.text_input(label='Stadtname:')
@@ -58,11 +58,11 @@ def APIRequest(city):
         lst_date_time.append(date_time_short[0] + ":00")
         wind = forecast['list'][i]['wind']['speed']
         lst_wind.append(str(forecast['list'][i]['wind']['speed']))
-    #listen mit pandas zu dataframe zusammenfügen
+    # listen mit pandas zu dataframe zusammenfügen
     df_winddaten = pd.DataFrame(list(zip(lst_date, lst_date_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
 
-    #Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
+    # Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
     days_group = df_winddaten.groupby(["Datum"])
 
     return (days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city)
@@ -105,11 +105,12 @@ def windrichtung_umrechner(windrichtung):
 
     return (himmelsrichtung)
 
+
 # Visualisierung der Daten. Die Spalten sind nur für den Aufbau da.
 #
 def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city):
 
-    col_ol,col_l,col_r,col_or=st.columns([1,1,1,1])
+    col_ol, col_l, col_r, col_or = st.columns([1, 1, 1, 1])
 
     col2.header('Aktuelle Winddaten für ' + city)
 
@@ -118,17 +119,16 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
     col_r.metric("Aktuelle Windrichtung: ", str(windrichtung) + "° ", himmelsrichtung)
 
     st.header('Vorhersage')
-    #Für jeden Tag der vorhersage wird eine Tabelle und ein Verlaufsdiagramm gezeichnet
+    # Für jeden Tag der vorhersage wird eine Tabelle und ein Verlaufsdiagramm gezeichnet
     for name, group in days_group:
         group.drop(columns=['Datum'], inplace=True)
         split_name = name.split('-')
 
         with st.expander(split_name[2] + '.' + split_name[1] + '.' + split_name[0]):
-            tab1, tab2 = st.tabs([ "📈 Chart", "🗃 Data"])
+            tab1, tab2 = st.tabs(["📈 Chart", "🗃 Data"])
 
             ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line(
-                point=altair.OverlayMarkDef(color="orange")
-            ).encode(
+                point=altair.OverlayMarkDef(color="orange")).encode(
                 x=altair.X('Uhrzeit'),
                 y=altair.Y('Windstärke in m/s'),
                 tooltip='Windstärke in m/s').properties(width=400, height=350)
@@ -136,8 +136,8 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
             tab1.altair_chart(ts_chart_data)
 
             styler = group.style.hide_index()
-            with tab2:
-                st.write(styler.to_html(), unsafe_allow_html=True)
+            tab2.write(styler.to_html(), unsafe_allow_html=True)
+
 
 # Wenn der "submit button" gedrückt wird werden Daten angefordert, Transformiert, und anschließend Visualisiert.
 if submit_button:
