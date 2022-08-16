@@ -19,7 +19,7 @@ submit_button = form.form_submit_button(label='Los')
 
 
 # Notwendige Daten beschaffen und transformieren mithilfe der API von 'openweathermap.com'.
-# Zwei Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
+# 2 Requests, einmal für die aktuellen Daten und dann nochmal für die Vorhersage.
 #
 def APIRequest(city):
 
@@ -127,10 +127,12 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
 
         tab1.write(group)
 
-
-        ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line().encode(
+        ts_chart_data = altair.Chart(group.astype({'Windstärke in m/s': 'float'})).mark_line(
+            point=altair.OverlayMarkDef(color="orange")
+        ).encode(
             x=altair.X('Uhrzeit'),
-            y=altair.Y('Windstärke in m/s')).properties(width=300, height=250)
+            y=altair.Y('Windstärke in m/s'),
+            tooltip='Windstärke in m/s').properties(width=400, height=350)
 
         tab2.altair_chart(ts_chart_data)
 
