@@ -25,9 +25,7 @@ def APIRequest(city):
 
         API_key = "7634767ba0fee7f3345a359625d2791c"
 
-        land = "de"
-
-        API_anfrage_url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + land + "&appid=" + API_key
+        API_anfrage_url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",de&appid=" + API_key
 
         wetterdaten = requests.get(API_anfrage_url).json()
 
@@ -37,7 +35,7 @@ def APIRequest(city):
 
         himmelsrichtung = windrichtung_umrechner(windrichtung)
 
-        API_anfrage_forecast = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "," + land + "&appid=" + API_key
+        API_anfrage_forecast = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + ",de&appid=" + API_key
 
         forecast = requests.get(API_anfrage_forecast).json()
 
