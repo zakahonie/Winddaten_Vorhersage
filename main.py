@@ -121,8 +121,8 @@ def cs_body(days_group, windgeschwindigkeit, windrichtung, himmelsrichtung, city
     for name, group in days_group:
         group.drop(columns=['Datum'], inplace=True)
         split_name = name.split('-')
-
-        with st.expander(split_name[2] + '.' + split_name[1] + '.' + split_name[0]):
+        name = split_name[2] + '.' + split_name[1] + '.' + split_name[0]
+        with st.expander(name):
             tab1, tab2 = st.tabs(["🗃 Data", "📈 Chart"])
 
             styler = group.style.hide_index()
