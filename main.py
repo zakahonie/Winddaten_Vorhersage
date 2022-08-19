@@ -45,6 +45,7 @@ def APIRequest(city):
     lst_date = []
     lst_wind = []
     lst_time = []
+    lst_deg = []
 
     for i in range(0, len(forecast['list'])):
         _date_time = forecast['list'][i]['dt_txt']
@@ -52,11 +53,13 @@ def APIRequest(city):
         lst_date.append(date_time[0])
         date_time_short = date_time[1].split(':')
         lst_time.append(date_time_short[0] + ":00")
+        richtung = forecast['list'][i]['wind']['deg']
+        lst_deg.append(str(richtung) + '°')
         wind = forecast['list'][i]['wind']['speed']
         lst_wind.append(str(forecast['list'][i]['wind']['speed']))
     # listen mit pandas zu dataframe zusammenfügen
-    df_winddaten = pd.DataFrame(list(zip(lst_date, lst_time, lst_wind)),
-                                columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
+    df_winddaten = pd.DataFrame(list(zip(lst_date, lst_time, lst_wind, lst_deg)),
+                                columns=['Datum', 'Uhrzeit', 'Windstärke in m/s', 'Windrichtung'])
 
     # Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
     days_group = df_winddaten.groupby(["Datum"])
