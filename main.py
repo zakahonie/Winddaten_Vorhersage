@@ -44,18 +44,18 @@ def APIRequest(city):
 
     lst_date = []
     lst_wind = []
-    lst_date_time = []
+    lst_time = []
 
     for i in range(0, len(forecast['list'])):
-        _datedate_time = forecast['list'][i]['dt_txt']
-        date_time = _datedate_time.split()
+        _date_time = forecast['list'][i]['dt_txt']
+        date_time = _date_time.split()
         lst_date.append(date_time[0])
         date_time_short = date_time[1].split(':')
-        lst_date_time.append(date_time_short[0] + ":00")
+        lst_time.append(date_time_short[0] + ":00")
         wind = forecast['list'][i]['wind']['speed']
         lst_wind.append(str(forecast['list'][i]['wind']['speed']))
     # listen mit pandas zu dataframe zusammenfügen
-    df_winddaten = pd.DataFrame(list(zip(lst_date, lst_date_time, lst_wind)),
+    df_winddaten = pd.DataFrame(list(zip(lst_date, lst_time, lst_wind)),
                                 columns=['Datum', 'Uhrzeit', 'Windstärke in m/s'])
 
     # Objekt welches die Daten für die Vorhersage, aufgeteilt in die unterschiedlichen Tage, trägt.
@@ -87,7 +87,7 @@ def windrichtung_umrechner(windrichtung):
     elif 210 <= windrichtung < 240:
         himmelsrichtung = "SW"
     elif 240 <= windrichtung < 260:
-        _windrichtun = "WSW"
+        himmelsrichtung = "WSW"
     elif 260 <= windrichtung < 280:
         himmelsrichtung = "W"
     elif 280 <= windrichtung < 300:
